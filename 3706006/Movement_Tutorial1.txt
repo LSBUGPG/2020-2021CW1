@@ -1,0 +1,107 @@
+Description:
+
+This tutorial describes a NavMesh movement where you click on a Ground object and have your Player object turn and head towards the point clicked on.
+
+Assets:
+
+Ground
+Player
+
+PlayerMotor script:
+
+Create a script on the Player object.
+
+Above "Public class PlayerMotor" write:
+	[RequireComponent(typeof(NavMeshAgent))]
+
+Above the "Start()"-function write:
+	NavmeshAgent agent;
+
+Inside the "Start()"-function write:
+	agent = GetComponent<NavMeshAgent>();
+
+Remove the "Update()"-function and replace it with "public void MoveToPoint(Vector3 point){}"
+
+Within the "MoveToPoint(Vector3 point)"-function write:
+	agent.SetDestination(point);
+
+SAVE.
+
+
+PlayerController script:
+
+On the Player object add another script component called "PlayerController".
+
+Above "public class PLayerController" write:
+	[RequireComponent(typeof(PlayerMotor))]
+
+above the "Start()"-function write:
+	public LayerMask movementMask;
+	Camera cam;
+	PlayerMotor motor;
+
+Inside the "Start()"-function write:
+	cam = Camera.main;
+	motor = GetComponent<PlayerMotor>;
+
+Inside the "Update()"-function write as shown below:
+	if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 100, movementMask))
+            {
+                motor.MoveToPoint(hit.point);
+            }
+        }
+
+SAVE.
+
+When you have both scripts you need to add a few more components.
+
+Add component to Player:
+
+	Capsule collider component and check the "Is Trigger" box.
+	Add a Rigidbody component and check both the "Use Gravity" and "Is Kinematic" boxes.
+
+Add compnent to Ground:
+
+	You need to create a new layer in the "Layer" drop-down menu and click "Add Layer...", on the next available slot write "Ground".
+	Go back to your Ground object and make sure it is on the "Ground" layer.
+	Add a box collider component and do NOT check the "Is Trigger" box, the Ground object should not be a trigger.
+	While on Ground, navigate the "Navigation" tab next to the "Inspector" tab. 
+	In the "Navigation" tab, press the "Bake" button and then within "Advanced" press "Bake" that is next to "Clear".
+
+Make sure to save.
+
+When you have all the components and objects set up the Player should be able to move when you press play and you click anywhere on Ground.
+
+**Optional**
+Camera movement, follows the player movements.
+
+On the Main Camera, add the script compnent "CameraController".
+
+Remove the "Start()"-function.
+
+Over the "Update()"-function write:
+	public Transform target;
+	public Vector3 offset;
+	public float zoomSpeed = 4f;
+    	public float minZoom = 5f;
+    	public float maxZoom = 15f;
+    	public float pitch = 1f;
+    	private float currentZoom = 10f;
+
+Inside the "Update()"-function write:
+	currentZoom -= Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
+	currentZoom = Mathf.Clamp(currentZoom, minZoom, maxZoom);
+
+Under the "Update()"-function write:
+	Private Void LateUpdate() {}
+
+Inside of the "LateUpdate()"-function write:
+	transform.position = target.position - offset * currentZoom;
+	transform.LookAt(target.position + Vector3.up * pitch);
+
+SAVE.

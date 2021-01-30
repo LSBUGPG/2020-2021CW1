@@ -1,0 +1,73 @@
+Description:
+
+This tutorial describes an object grabbing mechanic where when a player is close enough can press the "H"-button and can hold an Item and the Item snaps back to its original position once you let go of the "H"-button.
+
+Assets:
+
+Ground
+Player
+Item
+
+Make sure that your Item object has the following components:
+	Box collider - "Is Trigger" checked
+	Box collider - "Is Trigger" not checked
+	Rigidbody - "Use Gravity" checked, "Is Kinematic" not checked
+
+Make sure that your Player object has the following components:
+	Capsule collider - "Is Trigger" checked
+	Rigidbody - "Use Gravity" checked, "Is Kinematic" checked
+
+
+On the Player object creat a script component called "GrabAndDrag".
+
+In the script, above the "Start()"-function write:
+	public GameObject item;
+    	public GameObject tempParent;
+    	public Transform guide;
+    	Vector3 originalPos;
+
+Inside the "Start()"-function write:
+	if (Input.GetKeyDown(KeyCode.H))
+        {
+            OnButtonDown();
+        }
+        else if (Input.GetKeyUp(KeyCode.H))
+        {
+            OnButtonUp();
+        }
+
+
+Remove the "Update()"-function.
+
+
+Beneath the "Start()"-function create two new functions:
+	void OnButtonDown() {}
+	void OnButtonUp() {}
+
+Inside the "OnButtonDown()"-function write:
+	item.GetComponent<Rigidbody>().useGravity = false;
+	item.GetComponent<Rigidbody>().isKinematic = true;
+	originalPos = item.transform.position;
+	item.transform.position = guide.transform.position;
+        item.transform.rotation = guide.transform.rotation;
+	item.transform.parent = tempParent.transform;
+
+Inside the "OnButtonUp()"-function write:
+	item.GetComponent<Rigidbody>().useGravity = true;
+        item.GetComponent<Rigidbody>().isKinematic = false;
+        item.transform.parent = null;
+        item.transform.position = originalPos;
+
+SAVE.
+
+In Unity:
+
+Create an empty game object and name it "Guide".
+
+Make "Guide" a child to the player object.
+
+Go to the player object and drag "Guide" into both the "Temp Parent" and "Guide" slots within the "Grab And Drag" script.
+
+Drag the "Item" into the "Item" slot inside the "Grab And Drag" script in the inspector.
+
+SAVE.

@@ -1,0 +1,87 @@
+Description:
+
+This tutorial will cover how to apply a crossfade transition between different scenes when the left mouse button is pressed.
+
+Assets:
+
+Scenes 2x
+Two different objects to see the transition taking place.
+
+
+Preparation in Unity:
+
+Create an empty game object and name it "Level Loader".
+
+Inside "Level Loader" create a UI Canvas.
+
+Rename it to "Crossfade".
+
+Under "Canvas Scale" go to "UI Scale Mode" and change it from "Constant Pixel Size" to "Scale With Screen Size".
+
+Inside "Crossfade" create a UI Image.
+
+Change its colour to black.
+
+To fit the black box to the screen click on the stretch box in the inspector, hold down alt and press the box in the bottom right corner.
+
+Add the component "Canvas Group" to Image and uncheck "Interactables" and "Blocks Raycasts".
+
+
+Now go to Animations.
+
+Create a new animation and name it "Crossfase_End".
+
+Go to one second on the animation timeline and turn down the alpha in "Canvas Group" to zero.
+
+Duplicate the animation, rename it to "Crossfade_Start" and reverse the key points on the timeline so it fades to black.
+
+Go to each animation and uncheck "Loop Time".
+
+
+In the Animator make sure "Entry" is connected to "Crossfade_End".
+
+Right click on "Crossfade_End" in the animator and "Make Transition" to "Crossfade_Start".
+
+In Parameters click the "+" in the upper right corner and create a "Trigger" and name it "Start".
+
+
+Now go to "File" > "Build Settings".
+
+The scenes should be added in the top box in the order you want them to be. 
+
+If they are not there then drag and drop them in the order you want them.
+
+
+In "Level Loader" create the script component "LevelLoader".
+
+
+
+LevelLoader script:
+
+Above the "void Start()"-function write:
+	public Animator transition;
+    	public float transitionTime = 1f;
+
+Remove the "void Start()"-function.
+
+Inside the "void Update()"-function write:
+	if (Input.GetMouseButtonDown(0))
+        {
+            LoadNextLevel();
+        }
+
+Under the "void Update()"-function write:
+	public void LoadNextLevel() {}
+	IEnumerator LoadLevel(int LevelIndex) {}
+
+Inside the "public void LoadNextLevel()"-function write:
+	StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1));
+
+Inside the "IEnumerator LoadLevel(int LevelIndex)"-function write:
+	transition.SetTrigger("Start");
+        yield return new WaitForSeconds(transitionTime);
+        SceneManager.LoadScene(LevelIndex);
+
+SAVE.
+
+Make sure that the "Level Loader" object in Unity is in both the scenes you want to fade into and from.

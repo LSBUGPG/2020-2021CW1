@@ -1,0 +1,132 @@
+Description:
+
+This tutorial shows the code for a connect the dots mechanic where you click on a set of points in a certain order to draw lines between them. Once the shape is complete and displayed for a second it disappears and reveals a new shape.
+
+Assets:
+
+spheres 2 (or more)
+
+ShapeTrace script:
+
+Above the "void Start()"-function write:
+	public Transform[] MiniGames;
+    	public List<GameObject> corners;
+    	GameObject currentCorner;
+    	LineRenderer line;
+    	bool shapeComplete = false;
+    	int numberMG;
+    	int MGindex = 0;
+    	int numberOfCorners;
+
+Inside the "void Start()"-function write:
+	corners = new List<GameObject>();
+        line = GetComponent<LineRenderer>();
+        numberMG = MiniGames.Length;
+        numberOfCorners = MiniGames[MGindex].childCount;
+
+Between the "void Start()"-function and "void Update()"-function write:
+	"public void AddCorner(GameObject G) {}"
+
+Within the "public void AddCorner(GameObject G)"-function write:
+	corner.Add(G);
+
+Inside the "void Update()"-function write:
+	if (shapeComplete == true)
+        {
+            return;
+        }
+        line.startWidth = 0.01f;
+        line.endWidth = 0.01f;
+        line.alignment = LineAlignment.TransformZ;
+        line.positionCount = 1;
+
+        line.positionCount = corners.Count;
+ 
+        LineRenderer cc = GetComponent<LineRenderer>();
+        cc.forceRenderingOff = false;
+        cc.startWidth = 0.01f;
+        cc.endWidth = 0.01f;
+        cc.alignment = LineAlignment.TransformZ;
+        cc.positionCount = 1;
+        int c = corners.Count;
+        if (corners.Count > 0)
+        {
+            cc.positionCount = corners.Count;
+
+            if (corners.Count == numberOfCorners)
+            {
+                cc.positionCount += 1;
+            }
+            
+            for (int i = 0; i < c; i++)
+            {
+                cc.SetPosition(i, corners[i].transform.position);
+            }
+
+            if (corners.Count == numberOfCorners)
+            {
+
+                if (corners.Count > 2)
+                {
+                    cc.SetPosition(numberOfCorners, corners[0].transform.position);
+                }
+                shapeComplete = true;
+                Invoke("NextMiniGame", 2f);
+            }
+        }
+
+Underneath the "void Update()"-function write:
+	"void NextMiniGame() {}"
+
+Within the "void NextMiniGame()"-function write:
+	corners = new List<GameObject>();
+        line.forceRenderingOff = true;
+        shapeComplete = false;
+        MiniGames[MGindex].gameObject.SetActive(false);
+        MGindex += 1;
+        if (MGindex < MiniGames.Length)
+        {
+            MiniGames[MGindex].gameObject.SetActive(true);
+            numberOfCorners = MiniGames[MGindex].childCount;
+        }
+
+SAVE.
+
+Corner script:
+
+Above the "void Start()"-function write:
+	ShapeTrace game;
+    	public Color normal;
+    	public Color highlight;
+    	MeshRenderer mr;
+
+Within the "void Start()"-function write:
+	game = GameObject.FindGameObjectWithTag("ShapeTrace").GetComponent<ShapeTrace>();
+        mr = GetComponent<MeshRenderer>();
+        mr.material.color = normal;
+
+Remove the "void Update()"-function and replace it with "private void OnMOuseDown() {}".
+
+Within the "private void OnMouseDown()"-function write:
+	mr.material.color = highlight;
+        game.AddCorner(this.gameObject);
+
+In Unity:
+
+Create an empty game object and name it "Shape" and add the "ShapeTrace" script to it. 
+
+Go to the "Shape" object and go to "Mini Games" and expand it.
+
+There you can add the amount of shapes you want to have in appear after one another.
+
+
+Create another empty game object and name it "MiniG1" which will be your first shape.
+
+Add the corner object and make sure all corners have the "Corner" script applied to them.
+
+Add the amount of corners you want the shape to have and make them children to "MiniG1".
+
+
+Go back to "Shape" and drag "MiniG1" into the empty slot for "Element 0" underneath "Mini Game".
+
+SAVE.
