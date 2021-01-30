@@ -1,0 +1,109 @@
+Tutorial for a moving behaviour that moves towards an instantiated object.
+
+Lets first start with a simple moving script using the Nav mesh component.
+Dont forget to add that your using Unity engine AI at the top.
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;                                       // Using AI
+
+
+public class Follow : MonoBehaviour
+{
+    public Transform goal;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+       
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+       NavMeshAgent agent = GetComponent<NavMeshAgent>();      // Calling on the component of our AI in Unity
+       agent.destination = goal.position;                     // assigning a move towards position
+    }
+}
+
+Since we are using the NavMeshAgent, we only need a few steps. 
+In Unity we assign our AI a navMeschAgent Component.
+We call on that in our first line of Code. In the second line we call upon the destination of our Movement. 
+In this case we named it goal.
+
+We will define goal in our instantiate script.
+
+In this instance the instantiate script is more complicated as it cooses between a number of different spawn objects 
+and sets random times between each spawn.
+For my purposes I name my spawn objects plants. 
+we start by creating the option for multiple plants in unity by creating a public GameObject[].
+As we are using a coroutine to set random times we must first create our terms and make the public so we can acces them in Unity.
+Most of the functions describe exactly what they do in their names.
+
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class plant : MonoBehaviour
+{
+    public GameObject[] plants;                      //creating an option in Unity to add spawn objects in Unity
+    public Vector3 spawnValues;
+    public float spawnWait;
+    public float spawnMostWait;
+    public float spawnLeastWait;
+    public int startWait;
+    public bool stop;
+    
+    int randPlant;
+     
+ 
+
+    // Start is called before the first frame update
+    void Start()
+    {
+       StartCoroutine(Spawner());
+
+    }
+
+   
+
+    // Update is called once per frame
+    void Update()
+    {
+        spawnWait = Random.Range (spawnLeastWait, spawnMostWait);
+    }
+
+
+    IEnumerator Spawner()
+    {
+        yield return new WaitForSeconds (startWait);
+
+        while (!stop)
+        {
+            randPlant = Random.Range (0,3);
+
+            Vector3 spawnPosition = new Vector3 (Random.Range (-spawnValues.x, spawnValues.x),1, Random.Range (-spawnValues.z, spawnValues.z));
+            
+
+
+            GameObject NewPlant = (GameObject) Instantiate (plants[randPlant], spawnPosition, gameObject.transform.rotation);
+            Follow AI = (Follow) Object.FindObjectOfType (typeof(Follow));
+            AI.goal = NewPlant.transform;
+
+            yield return new WaitForSeconds (spawnWait);
+        }
+
+    }
+
+
+}
+
+In the last couple of lines we define our goal position for the AI in the other script.
+We call on the random spawn position of our plant, make it a Vector we can easily acces. 
+The first line here calls on our 3 random plants to chose a random one.
+The line after creates the random positions.
+
+The next line focuses on the instantiating of our object using the just created random plant and position.
+The next line links to our other script and calls on it to follow our in the next line created AI.goal.

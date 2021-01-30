@@ -1,0 +1,138 @@
+In this project we combine scripts that
+- lets us move our character
+- lets us detect if we clicked on an object
+- randomly plants an object
+- self destructs that object
+
+Starting with a simplemovment script
+We start of by setting our various speeds and make them public so we can edit themm in Unity.
+
+
+public float speed = 2.0f;
+public float rotateSpeed = 5f;
+private Vector3 moveDirection = Vector3.zero;
+
+
+Next up w are going to use a CharacterController controller and make sure that we assign
+our player the CharacterController component in Unity.
+
+
+
+
+ void Update()
+    {
+       CharacterController controller = GetComponent<CharacterController>();
+
+	  
+	   moveDirection = new Vector3(0, 0, Input.GetAxis("Vertical"));
+	   moveDirection = transform.TransformDirection(moveDirection);
+	   moveDirection *= speed;
+	 
+	   controller.Move(moveDirection * Time.deltaTime);
+
+	   transform.Rotate(0, Input.GetAxis("Horizontal"), 0);
+    }
+
+
+
+The next lines simple make sure that we can move by using the arrow keys or awsd keys to move.
+Alos that we link pack to the speed variables we set at the beginning.
+
+With that done we can move on to the script that allows us to detect if we hit an object
+we can interact with with our mouse click.
+This is also a short script that usees Raycasting.
+We simply check for mouse button input and use raycasting to detect if ther where any objects in that ray.
+By adding a tag we can specifiy what objects we are looking for. In this case we look for the tag plant.
+
+For my purposses I the added a statement that would destroy the object if it fullfilled all conditions.
+You can change that to whatever your purposes are.
+
+
+
+	 if (Input.GetMouseButtonDown (0)) 
+         {    
+             var ray = Camera.main.ScreenPointToRay(Input.mousePosition); // creating the origin as from the main camera
+             
+             RaycastHit hit;
+ 
+             if (Physics.Raycast(ray, out hit)) // origin is ray and the direction is outwards for a max dist of a 100 (against all colliders in scene)
+             {
+                 // whatever tag you are looking for on your game object
+                 if(hit.collider.tag == "plant") // check if the gameobjects hit have the tag box
+                 {                         
+                      
+                     Destroy(hit.collider.gameObject);   // Destroy the gameobject
+                 }    
+             }
+         
+
+Next we are going to look at a slightly more complicated script that randomly spawns 
+random plant in random places.
+
+
+
+        public class plant : MonoBehaviour
+{
+    public GameObject[] plants;
+    public Vector3 spawnValues;
+    public float spawnWait;
+    public float spawnMostWait;
+    public float spawnLeastWait;
+    public int startWait;
+    public bool stop;
+    
+    int randPlant;
+     
+ 
+
+    // Start is called before the first frame update
+    void Start()
+    {
+       StartCoroutine(Spawner());
+
+    }
+
+   
+
+    // Update is called once per frame
+    void Update()
+    {
+        spawnWait = Random.Range (spawnLeastWait, spawnMostWait);
+    }
+
+
+This part is the actual spawning of the objects.
+reandPlant used in Unity to add the different Objects.
+The Vector used to create the random spawn positions.
+
+
+    IEnumerator Spawner()
+    {
+        yield return new WaitForSeconds (startWait);
+
+        while (!stop)
+        {
+            randPlant = Random.Range (0,3);
+
+            Vector3 spawnPosition = new Vector3 (Random.Range (-spawnValues.x, spawnValues.x),1, Random.Range (-spawnValues.z, spawnValues.z));
+
+            Instantiate (plants[randPlant], spawnPosition, gameObject.transform.rotation);
+
+            yield return new WaitForSeconds (spawnWait);
+        }
+
+    } 
+    
+The last script attached to the actual spawn objects in Unity is a simple self destruct script.
+It simply calls on our Object and then uses the public float to determine how long to wait 
+before executing the command of Detroy,
+
+
+    public GameObject Plant;
+    public float waitFor;
+    
+    // Start is called before the first frame update
+    void Start()
+    {
+       Destroy(Plant, waitFor);
+    }

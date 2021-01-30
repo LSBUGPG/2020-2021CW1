@@ -1,0 +1,105 @@
+Roaming Ai
+
+In this case we want to create an IA thst randomly walks around. 
+We will do this by using IEnumerator. 
+If you cant follow this tutorial try to look up more tutorials that use these.
+
+We start by creating our rotatinf and moving speed and making them public.
+
+
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Roaming : MonoBehaviour
+{
+	public float moveSpeed = 3f;                                  // Moving speed
+	public float rotSpeed = 100f;                                   // rotating speed
+
+
+
+
+
+	Next we create our bools and set them to false. 
+	In the update we put our bools in if statements to start a Coroutine or our moving and rotating.
+
+
+
+	private bool isWandering = false;
+	private bool isRotatingLeft = false;
+	private bool isRotatingRight = false;
+	private bool isWalking = false;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+		if(isWandering == false)
+		{
+			StartCoroutine(Wander());
+		}
+		if(isRotatingRight == true)
+		{
+			transform.Rotate(transform.up * rotSpeed *Time.deltaTime);
+		}
+		if(isRotatingLeft == true)
+		{
+			transform.Rotate(transform.up *rotSpeed * Time.deltaTime);
+		}
+		if(isWalking == true)
+		{
+			transform.position += (transform.forward * moveSpeed * Time.deltaTime);
+		}
+    }
+
+
+
+
+	All the IEnumerator does is set random times between the rotations and walking intervalls.
+	First we created our random values using int.
+	the yield return statements afterwards make sure to define left and right rotation 
+	as well as call upon our random int and link back to our if statements above.
+
+
+
+	IEnumerator Wander()
+	{
+		int rotTime = Random.Range(1, 3);        //time it takes to rotate//
+		int rotateWait = Random.Range(1, 4);     // time between ech rotatation//
+		int rotateLorR = Random.Range(0, 3);     // turning left or right//
+		int walkWait = Random.Range(1, 4);       // time between each walk cycle//
+		int walkTime = Random.Range(1, 5);       //amount of time it can walk in one go//
+
+		isWandering = true;
+
+		yield return new WaitForSeconds(walkWait);      
+		isWalking = true;
+
+		yield return new WaitForSeconds(walkTime);
+		isWalking = false;
+
+		yield return new WaitForSeconds(rotateWait);
+		if(rotateLorR == 1)
+		{
+			isRotatingRight = true;
+			yield return new WaitForSeconds(rotTime);
+			isRotatingRight = false;
+		}
+		if(rotateLorR == 2)
+		{
+			isRotatingLeft = true;
+			yield return new WaitForSeconds(rotTime);
+			isRotatingLeft = false;
+		}
+		isWandering = false; // repeating the whole process//
+	}
+}
+
+
