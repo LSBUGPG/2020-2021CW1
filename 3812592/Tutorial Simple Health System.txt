@@ -1,0 +1,48 @@
+Hello, and welcome to the third tutorial. In this one, we're going to make a very simple health system, and I'll also go over a simple way of tweaking it into changing it's purpose.
+Let's get to it.
+
+First, define your variables:
+
+- Making this variable public and static means other scripts can access it's value, as well as you're able to dynamically change it from the unity editor.
+Good for tweaking HP amounts.
+
+public static float health;
+
+Then, we get into start. This part is entirely optional, as you can set it differently. However, for debugging I recommend setting the HP amount in start as well.
+
+- This part of the code simply sets the life amount of the player.
+
+    void Start()
+    {
+        health = 3;
+    }
+
+Then, we make the collision part of the code, which determines what happens with the life, when. Everything is influenced by collisions here.
+Theoretically, by lightly editing the functions of these, as well as changing the code from being health into, let's say, score, you would be able to make things like
+score coins, powerups, and such. Simply make the variables you want to influence static, and make them influence them.
+
+- colObj specifies the object that is being collided *with*.
+- Then, based on the tag of the object being collided with, we can make it do simple / more advanced things.
+- If object is a health pickup, it adds 1 life, if it's an enemy, it removes 1 life.
+- This can be edited & tweaked as much as you want, feel free to experiment with this.
+
+    void OnCollisionEnter2D(Collision2D colObj)
+    {
+        if (colObj.gameObject.tag == ("healthPickup"))
+        {
+            health += 1;
+            Destroy(colObj.gameObject);
+        }
+
+        if (colObj.gameObject.tag == ("enemy"))
+        {
+            health -= 1;
+            Destroy(colObj.gameObject);
+        }
+    }
+
+And this is a simple life system, in code. Bear in mind, you would need to port this onto a canvas, which is simple enough.
+Secondarily, it's a very simple system, but it's easy to modify & expand on. You could for example set the life value to 100, and count it as a percentage.
+
+In the final fourth tutorial, we'll combine some things I've shown you before and this in order to create something simple & interesting as a platforming mechanic.
+With it, you will have 4 tutorials that will let you create a simple 2D platformer wireframe.

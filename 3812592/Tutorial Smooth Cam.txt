@@ -1,0 +1,182 @@
+Hello, and welcome to the tutorial. For this tutorial, make a simple unity project with a ground and a cube.
+You can have them in different colours, although it does not matter.
+The cube needs a Rigidbody 2D component and a Box Collider 2D Component, and the ground needs a Box Collider 2D Component.
+You can name the cube "player" for the sake of tutorials following this one.
+
+I will go over the steps to make a Smooth Camera Follow, and reference code. If there is something you'd like to know more,
+look it up in the unity scripting reference! :)
+
+So, step one, make a new script, we will define a lot of variables for this one. I will explain what each one of them is.
+
+Define those variables:
+        public Transform target;
+        public float damping = 1;
+        public float lookAheadFactor = 3;
+        public float lookAheadReturnSpeed = 0.5f;
+        public float lookAheadMoveThreshold = 0.1f;
+
+        private float m_OffsetZ;
+        private Vector3 m_LastTargetPosition;
+        private Vector3 m_CurrentVelocity;
+        private Vector3 m_LookAheadPos;
+
+The first block is variables referring to speed & smoothing of the camera.
+
+	public Transform target;
+
+- this one defines the object / target of smoothing.
+
+	public float damping = 1;
+
+- this one defines the smoothing itself
+
+	public float lookAheadFactor = 3;
+        public float lookAheadReturnSpeed = 0.5f;
+        public float lookAheadMoveThreshold = 0.1f;
+
+ - these variables define the speed at which the camera follows, the smoothness speed, as well as the "pop out" of the camera in a specific direction.
+
+This is the second set of variables, these are private offsets for the vector of the camera movement script. They are used internally by unity.
+
+        private float m_OffsetZ;
+        private Vector3 m_LastTargetPosition;
+        private Vector3 m_CurrentVelocity;
+        private Vector3 m_LookAheadPos;
+
+Now, in void start, define those variables:
+
+            m_LastTargetPosition = target.position;
+            m_OffsetZ = (transform.position - target.position).z;
+            transform.parent = null;
+
+LastTargetPosition defines where the player is for the script.
+OffsetZ defines the offset amount internally.
+transform.parent = null defines that the camera follow script / camera has no parent, unifying the movement.
+
+Then, in void update, write up this:
+
+        private void Update()
+        {
+            float xMoveDelta = (target.position - m_LastTargetPosition).x;
+
+            bool updateLookAheadTarget = Mathf.Abs(xMoveDelta) > lookAheadMoveThreshold;
+
+            if (updateLookAheadTarget)
+            {
+                m_LookAheadPos = lookAheadFactor*Vector3.right*Mathf.Sign(xMoveDelta);
+            }
+            else
+            {
+                m_LookAheadPos = Vector3.MoveTowards(m_LookAheadPos, Vector3.zero, Time.deltaTime*lookAheadReturnSpeed);
+            }
+
+            Vector3 aheadTargetPos = target.position + m_LookAheadPos + Vector3.forward*m_OffsetZ;
+            Vector3 newPos = Vector3.SmoothDamp(transform.position, aheadTargetPos, ref m_CurrentVelocity, damping);
+
+            transform.position = newPos;
+
+            m_LastTargetPosition = target.position;
+
+I will now describe what everything does step by step.
+
+            float xMoveDelta = (target.position - m_LastTargetPosition).x;
+
+This describes the movement on the X axis for the script to execute.
+
+            bool updateLookAheadTarget = Mathf.Abs(xMoveDelta) > lookAheadMoveThreshold;
+
+This describes the condition that must be fulfilled. It calculates using Mathf (collection of common maths functions) if the player is moving, and if the script needs to smooth look ahead.
+If it's bigger than the threshold pre-defined by you, it will move.
+
+Now, all the variables are coming into play, essentially.
+
+ if (updateLookAheadTarget)
+            {
+                m_LookAheadPos = lookAheadFactor*Vector3.right*Mathf.Sign(xMoveDelta);
+            }
+
+If the condition is fulfilled, it sets the look ahead position to a pre-defined distance from the player to smoothly look forward.
+It caltulates it using the lookAheadFactor timed by Vector3 timed by xMoveDelta math calculations.
+
+           else
+            {
+                m_LookAheadPos = Vector3.MoveTowards(m_LookAheadPos, Vector3.zero, Time.deltaTime*lookAheadReturnSpeed);
+            }
+
+The "else" functions if the previous condition has been fulfilled, eg. player stops moving.
+What it does is that it calculates the smooth return of the camera using vector 3. It sets the variables of Vector3 using pre-determined values, and times the Z movement with lookAheadReturnSpeed, so it's smoothed.
+
+            Vector3 aheadTargetPos = target.position + m_LookAheadPos + Vector3.forward*m_OffsetZ;
+
+This piece of code sets the vector3 aheadTargetPos to variables which are the player's position, look ahead position, and a forward offset.
+
+            Vector3 newPos = Vector3.SmoothDamp(transform.position, aheadTargetPos, ref m_CurrentVelocity, damping);
+
+This is the code that actually smoothes the camera, referencing current velocity and damping it.
+
+            transform.position = newPos;
+
+            m_LastTargetPosition = target.position;
+
+The last set of variables resets it back to 0 so the code can be re-run.
+
+This script goes in your Camera.
+
+When you're done, you should have this:
+
+using System;
+using UnityEngine;
+
+namespace UnityStandardAssets._2D
+{
+    public class Camera2DFollow : MonoBehaviour
+    {
+        public Transform target;
+        public float damping = 1;
+        public float lookAheadFactor = 3;
+        public float lookAheadReturnSpeed = 0.5f;
+        public float lookAheadMoveThreshold = 0.1f;
+
+        private float m_OffsetZ;
+        private Vector3 m_LastTargetPosition;
+        private Vector3 m_CurrentVelocity;
+        private Vector3 m_LookAheadPos;
+
+        // Use this for initialization
+        private void Start()
+        {
+            m_LastTargetPosition = target.position;
+            m_OffsetZ = (transform.position - target.position).z;
+            transform.parent = null;
+        }
+
+
+        // Update is called once per frame
+        private void Update()
+        {
+            // only update lookahead pos if accelerating or changed direction
+            float xMoveDelta = (target.position - m_LastTargetPosition).x;
+
+            bool updateLookAheadTarget = Mathf.Abs(xMoveDelta) > lookAheadMoveThreshold;
+
+            if (updateLookAheadTarget)
+            {
+                m_LookAheadPos = lookAheadFactor*Vector3.right*Mathf.Sign(xMoveDelta);
+            }
+            else
+            {
+                m_LookAheadPos = Vector3.MoveTowards(m_LookAheadPos, Vector3.zero, Time.deltaTime*lookAheadReturnSpeed);
+            }
+
+            Vector3 aheadTargetPos = target.position + m_LookAheadPos + Vector3.forward*m_OffsetZ;
+            Vector3 newPos = Vector3.SmoothDamp(transform.position, aheadTargetPos, ref m_CurrentVelocity, damping);
+
+            transform.position = newPos;
+
+            m_LastTargetPosition = target.position;
+        }
+    }
+}
+
+There was a youtube video that really helped me graps it and be able to understand this code, however I am unable to find it. I seriously recommend looking at it though, because this code is based on it.
+

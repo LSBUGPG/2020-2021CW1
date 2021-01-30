@@ -1,0 +1,68 @@
+For the final part of the tutorials, we will try to re-create the super mario 64 lava mechanics and port them over into 2D rather than being 3D. I thought it'd be a fun mechanic to experiment with.
+
+First of all, we'd need to break down 2 key parts we need to make happen. We did both of them beforehand, we can make them again.
+
+1 - It needs to remove [X] health.
+2 - It needs to add Y velocity.
+
+For the sake of cleanliness of code, I've done this in a second piece rather than in the health system. It's easy to do in the health system, but it's cleaner to develop if it doesn't have a ton ton ton of things inside of it,
+plus here I can explain it a bit more in-depth for how simple the code is.
+
+Let's get into it.
+
+First of all, this code has no variables of it's own. Everything is being pulled from other bits of code. That's why we set some variables previously mentioned to Static.
+
+That way, we don't need to redefine variables, PLUS, some code is there to influence other parts of the game.
+
+You can remove void start and void update from this code.
+
+Then, make a new void, call it OnCollisionEnter2D, just like in the health system script.
+
+- If the collision object's tag is "lava", the player is launched upwards by 10, and 1 health drains.
+- The way static variables work is that first you name the script it's being pulled from, add a dot and then make the edits. HealthSystem.Health is:
+HealthSystem < --- Name of Script
+health < --- Name of Variable
+
+Anything past that is calculations we'd like to change.
+
+We can also pick up a lot of different, smaller variables from the script.
+
+- Controller2D.rB.velocity controls the velocity of the rigidbody. In order to keep it in line with the sideways speed, we need to only influence the Y axis.
+To do that, we need to pull the current X rb velocity from the other script by making the rb velocity of the 2D Controller a new Vector2 where the first float of it is Controller2D.rB.velocity.x, which takes the current X velocity
+and keeps it, the other being the height you want the player to be launched upwards.
+
+    void OnCollisionEnter2D(Collision2D colObj)
+    {
+        if (colObj.gameObject.tag == ("lava"))
+        {
+            HealthSystem.health -= 1;
+            Controller2D.rB.velocity = new Vector2(Controller2D.rB.velocity.x, 10);
+        }
+    }
+
+That's it. This was more of a coding tutorial than a code tutorial, per se.
+
+Complete code:
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class LavaBoost : MonoBehaviour
+{
+
+    void Start()
+    {
+        
+    }
+
+    void OnCollisionEnter2D(Collision2D colObj)
+    {
+        if (colObj.gameObject.tag == ("lava"))
+        {
+            HealthSystem.health -= 1;
+            Controller2D.rB.velocity = new Vector2(Controller2D.rB.velocity.x, 10);
+        }
+    }
+}
+

@@ -1,0 +1,74 @@
+date / start / end / break / hours / description
+
+13/10/20 / 10:20 / 10:30 / 0 / 0.16 / setting up a unity project
+13/10/20 / 10:30 / 10:35 / 0 / 0.8 / Copying Files From other PC
+13/10/20 / 10:35 / 11:10 / 0 / 0.58 / Experimenting with old code
+13/10/20 / 11:50 / 12:00 / 20 / 0.16 / Finishing up for the day
+
+15/10/20 / 12:00 / 13:00 / 0 / 1 / Continuing work on camera smoothing script.
+15/10/20 / 13:00 / 14:00 / 0 / 1 / Bugfixing code
+15/10/20 / 14:00 / 14:30 / 0 / 0.50 / Finishing up for the day & cleaning up code
+
+21/10/20 / 16:00 / 18:00 / 0 / 2 / Cleaning up & final touches onto Camera Smoothing Script
+21/10/20 / 18:00 / 19:00 / 0 / 1 / Writing up tutorial for Camera Smoothing Script
+21/10/20 / 19:20 / 19:40 / 20 / 0.32 / Cleaning up tutorial for Camera Smoothing Script
+
+16/11/20 / 18:00 / 18:10 / 0 / 0.16 / Setting up for 2D Controller Code
+16/11/20 / 18:10 / 18:20 / 0 / 0.16 / Writing up 2D Controller Code
+16/11/20 / 18:20 / 18:40 / 0 / 0.32 / Debugging 2D Controller Code
+16/11/20 / 19:00 / 19:10 / 20 / 0.16 / Finishing up for today
+
+17/11/20 / 16:00 / 19:30 / 30 / 3.5 / Writing up 2D Controller Code (Iteration 1)
+17/11/20 / 19:30 / 19:45 / 0 / 0.25 / Cleaning up code & finishing up for today
+
+18/11/20 / 16:00 / 17:00 / 0 / 1 / Research for 2D Controller Code
+
+19/11/20 / 16:00 / 19:00 / 0 / 3 / Writing up 2D Controller Code (Iteration 2)
+19/11/20 / 19:00 / 19:10 / 0 / 0.16 / Finishing up iteration 2
+
+23/11/20 / 15:00 / 15:10 / 0 / 0.8 / Research for 2D Controller Code
+
+24/11/20 / 16:00 / 19:00 / 0 / 3 / Writing up 2D Controller Code (Final Iteration)
+24/11/20 / 19:00 / 19:30 / 15 / 0.5 / Finishing up for today
+
+27/11/20 / 20:00 / 00:00 / 30 / 4 / Debugging code & Implementing Juicde
+28/11/20 / 00:00 / 00:30 / 0 / 0.5 / Finishing up for tonight, will debug further.
+
+30/12/20 / 16:00 / 17:00 / 0 / 1 / Debugging 2D Controller Code
+30/12/20 / 17:00 / 17:15 / 0 / 0.25 / Cleaning up 2D Controller Code
+30/12/20 / 17:15 / 17:30 / 0 / 0.25 / Finishing up for today
+
+03/12/20 / 10:00 / 11:00 / 0 / 1 / Writing up 2D Controller tutorial
+03/12/20 / 11:00 / 11:30 / 0 / 0.50 / Editing 2D Controller tutorial
+03/12/20 / 11:30 / 12:00 / 15 / 0.50 / Editing 2D Controller tutorial & finishing for the day
+
+06/12/20 / 18:00 / 19:00 / 15 / 1 / Editing 2D Controller tutorial
+06/12/20 / 19:00 / 19:15 / 0 / 0.25 / Finishing up for the day
+
+07/12/20 / 18:00 / 19:00 / 0 / 1 / Editing 2D Controller tutorial
+07/12/20 / 19:00 / 20:00 / 0 / 1 / Rewriting parts of 2D Controller tutorial
+07/12/20 / 20:00 / 20:30 / 0 / 0.50 / Finishing up 2D Controller tutorial
+
+10/12/20 / 14:00 / 15:00 / 0 / 1 / Writing Health System script
+10/12/20 / 15:00 / 16:00 / 15 / 1 / Re-writing Health System script (Simplifying)
+10/12/20 / 16:00 / 16:30 / 0 / 0.50 / Writing Lava Boost Script
+10/12/20 / 16:30 / 17:00 / 0 / 0.50 / Cleaning up both scripts
+10/12/20 / 17:00 / 17:15 / 0 / 0.25 / Finishing up for the day
+
+13/12/20 / 16:00 / 16:30 / 0 / 0.50 / Writing up tutorial 3
+13/12/20 / 16:30 / 16:45 / 0 / 0.25 / Cleaning up & finishing up for the day
+
+17/12/20 / 14:00 / 14:45 / 0 / 0.75 / Writing up tutorial 4
+17/12/20 / 14:45 / 15:00 / 0 / 0.25 / Editing tutorial 4
+17/12/20 / 15:00 / 15:15 / 0 / 0.25 / Finishing up for the day
+
+22/12/20 / 17:00 / 19:00 / 0 / 2 / Cleaning up code & tutorials
+22/12/20 / 19:00 / 19:15 / 0 / 0.25 / Finishing up for the day & final touches
+
+30/12/20 / 18:00 / 19:00 / 0 / 1 / Cleaning up Journal
+
+31/12/20 / 01:00 / 3:30 / 20 / 2.50 / Cleaning up log
+31/12/20 / 3:30 / 3:40 / 0 / 0.25 / Tying up everything into submissions & finishing
+
+
+

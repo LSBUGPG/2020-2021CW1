@@ -1,0 +1,100 @@
+13/10/20
+
+I started off by copying old code I had in order to make tutorial 1.
+First issue I ran into is that the code is complex, so it would require a lot of explanations regarding the code.
+The way I can overcome this is by cross-referencing with the Unity Coding Guide.
+
+15/10/20
+
+I ran into no issues continuing with the smooth camera movement tutorial.
+
+20/10/20
+
+Camera Smoothing script is done.
+
+Moving onto tutorial.
+
+21/10/20
+
+Tutorial for camera smoothing finished.
+
+20/11/20
+
+Worked through majority of 2D Controller. It was simplistic, so it had to go through multiple iterations. Hopefully won't need to re-make it.
+Though, an issue with that is that it's simple, so will work through to make it more in-depth.
+
+Plan is to have 2 big pieces of code and 2 smaller ones.
+
+23/11/20
+
+Found a really nice youtube video on how to improve 2D movement.
+Decided to take inspiration from it & implement some of the fixes.
+
+Due to that, I had to re-make the entire movement script.
+
+Will keep prototyping with the new iteration to fit the fixes & improvements a bit better.
+
+27/11/20
+
+Managed to "fix" the 2D Controller script.
+
+It works right now, although it needs a bit of polish & big bugfixes alongside numbers tweaking.
+
+30/11/20
+
+2D Controller fully functional.
+
+Will move onto tutorial.
+
+I want to explain static variables in order to grab one of the variables for further scripts.
+
+Next 2 scripts will be simplier, as planned, for me to go a bit more in-depth about a few interesting things I think could be useful in the tutorials proper.
+
+Work will slow down due to December starting.
+
+7/12/20
+
+2D Controller Tutorial done. Ran into some issues with how I wanted to explain certain things, but after a few re-writes, I set on a flow for it that's easy to follow.
+
+Ontop of that, I've also run into a hole with not knowing what I want to do for the next 2 scripts. Will take a day or two of concepting of how to make them simpliest as possible.
+
+10/12/20
+
+Made the next 2 scripts today. I realized I can split a health system into 2 due to cleanliness in terms of in-engine development.
+
+1 is a simple health system w/ debugger.
+2 is a script that pulls static variables from both health and 2D controller to simulate lava mechanics from Super Mario 64 by Nintendo.
+
+I had a lot of fun doing those two, although I've ran into a lot of issues in terms of the health system...
+
+First iteration was too complex for what it was, and then I've kept simplifying and simplifying until it was as short as possible, but that runs into it's own issues:
+
+How do I make the system work with nothing affecting it?
+
+Decided to implement collisions into it, as well as this will pad out my tutorial so I can explain collisions & static variables.
+
+13/12/20
+
+Finished tutorial for Script 3.
+
+17/12/20
+
+Found some time to write up tutorial 4.
+
+I found difficulty in explaining how static variables work.
+
+Ended up realizing that I've put my expectations too low for who the tutorials would be for, and realized I can expect at least a tiny bit of coding prowess, so I used more in-depth ideas on how to explain it.
+Happy with the result afterwards.
+
+22/12/20
+
+Cleaning up leftover tutorials & code before christmas hits.
+
+30/12/20
+
+Cleaning up Log & Journal.
+
+Log will prove more difficult as I've been neglecting it, so some of the dates & times are missing. Listed my issues independently from the days worked, though.
+Found it easier to fix when I don't need to list dates I've run into them.
+
+Journal cleaned up for past entries, final date for journal updates planned on: 2nd Jan 2021.

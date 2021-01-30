@@ -1,0 +1,186 @@
+Hello, and welcome to the tutorial. In this tutorial, continuing from the 2D Camera Script, we will now make a full 2D character movement script, with added juice.
+The following tutorials will be quite easier than the first two, so you can take a deep breath. ^^
+
+Parts of this code are based on this video, with my own expansions to work with them in 1 big chunk of code. https://www.youtube.com/watch?v=vFsJIrm2btU - Jonas Tyroller. Really cool guy. :)
+
+First of all, define those variables in the public class:
+
+public static Rigidbody2D rB;
+public float moveSpeed = 5.0f;
+float inputX
+public float jumpVel = 10;
+public LayerMask ground;
+public bool isGrounded = false;
+public float jumpRem = 0;
+public float jumpRemTime = 0.2f;
+public float groundedRem = 0;
+public float groundedRemTime = 0.2f;
+public bool debug = false;
+
+- The first block of variables is responsible for setting the speed & jump height, as well as grabbing the rigidbody and setting the ground for the raycast (so you can actually jump.)
+
+Rigidbody2D rB;
+public float moveSpeed = 5.0f;
+float inputX
+public float jumpVel = 10;
+public LayerMask ground;
+public bool isGrounded = false;
+
+- Second block of variables is responsible for juiced up smoothing, what it does is that it allows the player to press space just a split second before landing or getting off the edge and still jump. Helps with making it feel natural & responsive.
+
+public float jumpRem = 0;
+public float jumpRemTime = 0.2f;
+public float groundedRem = 0;
+public float groundedRemTime = 0.2f;
+
+- The last odd piece of code out is the debugger for raycast.
+
+public bool debug = false;
+
+Then, in void start, you just need to grab the rigidbody.
+it should look like this:
+
+void Start()
+{
+	rb = GetComponent<Rigidbody2D>();
+}
+
+Then, the update code comes in:
+
+void Update()
+{
+	groundedRem -= Time.deltaTime;
+
+	if (isGrounded == true)
+	{
+		groundedRem = groundedRemTime;
+	}
+
+- What this does is that it sets the groundedRem to the groundedRemTime for smoothing calculations. It's the time that the player has for pressing spacebar in order to jump based off of ground / isGrounded statuses.
+This one is responsible for if the player walks off a ledge, it allows them to jump if it was within 0.2f of walking off the edge.
+
+After this, we repeat the same for the jumpRem:
+
+	jump Rem -= Time.deltaTime;
+
+	if(Input.GetKeyDown(KeyCode.Space))
+	{
+	jumpRem = jumpRemTime;
+	}
+
+The only difference between the codes is that the jumpRem time is based off of player's jump input, while the groundedRem is based off of the isGrounded status.
+
+And at the final chunk of update, we actually implement the jump & movement.
+
+- The "if" statement is responsible for checking if the player is allowed a jump, based on the smoothing windows we've set. Then, it resets the windows back to 0 (for future calculations)
+& implements a force on the rigidbody equivalent to our jumpVel and keeps the X velocity as it was.
+
+	if ((jumpRem > 0) && (groundedRem > 0))
+	{
+	jumpRem = 0;
+	groundedRem = 0;   - Sets variables back to 0
+	rB.velocity = new Vector2 (rb.velocity.x, jumpVel);
+	}
+
+Then, we just map the X axis movement timed by speed to the horizontal keys:
+
+- The first line maps the horizontal inputs to inputX while the second handles velocity calculations based on inputX times movementspeed, keeping the Y velocity in mind.
+
+inputX = Input.GetAxisRaw("Horizontal");
+rB.velocity = new Vector2(inputX * moveSpeed, rB.velocity.y);
+
+The last thing to do in the entire set of code is to implement a raycast, so it checks if we're grounded. To do that, we make a new void FixedUpdate.
+
+It should look like this:
+
+- The if statement here draws a raycast on the Y axis with the length just barely longer than the player, and sets the layer that it's designed to hit to "ground", so as long as something's tagged as ground, it's going to be called a hit.
+The second part of this code is responsible for setting the raycast visible for debugging & tweaking.
+
+    void FixedUpdate()
+    {
+        if (Physics2D.Raycast(transform.position, -Vector2.up, 1.05f, ground))
+        {
+            isGrounded = true;
+        }
+        else
+            isGrounded = false;
+        if (debug)
+        {
+            Debug.DrawRay(transform.position, -Vector2.up * 1.05f, Color.green);
+        }
+    }
+}
+
+With all this, you should have a pretty juiced up 2D Controller.
+
+Complete code should look like this:
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Controller2D : MonoBehaviour
+{
+    public static Rigidbody2D rB;
+    public float moveSpeed = 5.0f;
+    float inputX;
+
+    public LayerMask ground;
+    public bool debug = false;
+
+    public static bool isGrounded = false;
+
+    public float jumpRem = 0;
+    public float jumpRemTime = 0.2f;
+
+    public float groundedRem = 0;
+    public float groundedRemTime = 0.2f;
+
+    public float jumpVel = 10;
+
+    void Start()
+    {
+        rB = GetComponent<Rigidbody2D>();
+    }
+
+    void Update()
+    {
+        groundedRem -= Time.deltaTime;
+        if (isGrounded == true)
+        {
+            groundedRem = groundedRemTime;
+        }
+
+        jumpRem -= Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            jumpRem = jumpRemTime;
+        }
+
+        if ((jumpRem > 0) && (groundedRem > 0))
+        {
+            jumpRem = 0;
+            groundedRem = 0;
+            rB.velocity = new Vector2(rB.velocity.x, jumpVel);
+        }
+
+        inputX = Input.GetAxisRaw("Horizontal");
+        rB.velocity = new Vector2(inputX * moveSpeed, rB.velocity.y);
+    }
+
+    void FixedUpdate()
+    {
+        if (Physics2D.Raycast(transform.position, -Vector2.up, 1.05f, ground))
+        {
+            isGrounded = true;
+        }
+        else
+            isGrounded = false;
+        if (debug)
+        {
+            Debug.DrawRay(transform.position, -Vector2.up * 1.1f, Color.green);
+        }
+    }
+}
+
+This code was made mostly by me, with a few inspirations & snippets of code from this video explaining how to improve your 2D Platformers. Great watch. Specifically, I've taken the smoothing from this video: https://www.youtube.com/watch?v=vFsJIrm2btU 
